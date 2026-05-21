@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorkBuddy 个人周报自动生成 · 快速上手指南</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+  :root {
+    --primary: #0052CC;
+    --primary-light: #E6F0FF;
+    --accent: #00875A;
+    --accent-light: #E3FCEF;
+    --warn: #DE350B;
+    --warn-light: #FFEBE6;
+    --purple: #6554C0;
+    --purple-light: #EAE6FF;
+    --gray-50: #F4F5F7;
+    --gray-100: #EBECF0;
+    --gray-200: #DFE1E6;
+    --gray-400: #B3BAC5;
+    --gray-600: #5E6C84;
+    --gray-800: #172B4D;
+    --orange: #FF5630;
+    --orange-light: #FFF3E0;
+    --radius: 12px;
+    --shadow: 0 2px 8px rgba(23,43,77,0.08);
+    --shadow-lg: 0 8px 24px rgba(23,43,77,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--gray-800);
+    background: #FAFBFC;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── Cover ── */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 24px;
+    background: linear-gradient(160deg, #0052CC 0%, #0065FF 40%, #2684FF 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    top: -200px; right: -100px;
+    border-radius: 50%;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    bottom: -100px; left: -50px;
+    border-radius: 50%;
+  }
+  .cover h1 { font-size: 42px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 12px; position: relative; z-index: 1; }
+  .cover .subtitle { font-size: 22px; font-weight: 300; opacity: 0.9; margin-bottom: 32px; position: relative; z-index: 1; }
+  .cover .meta { font-size: 14px; opacity: 0.6; position: relative; z-index: 1; }
+  .cover .badges { display: flex; gap: 12px; margin-top: 24px; position: relative; z-index: 1; flex-wrap: wrap; justify-content: center; }
+  .cover .badge {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    padding: 8px 20px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* ── Section ── */
+  .section {
+    padding: 64px 0;
+  }
+  .section + .section {
+    border-top: 1px solid var(--gray-100);
+  }
+  .section-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px; height: 36px;
+    background: var(--primary);
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--gray-800);
+    margin-bottom: 8px;
+  }
+  .section-desc {
+    font-size: 16px;
+    color: var(--gray-600);
+    margin-bottom: 32px;
+    padding-left: 48px;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px;
+    margin-bottom: 20px;
+    border: 1px solid var(--gray-100);
+  }
+  .card-accent {
+    border-left: 4px solid var(--primary);
+  }
+  .card-accent-green {
+    border-left: 4px solid var(--accent);
+  }
+  .card-accent-purple {
+    border-left: 4px solid var(--purple);
+  }
+
+  /* ── Comparison Table ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+  .compare-table th {
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .compare-table td {
+    padding: 14px 16px;
+    text-align: center;
+    font-size: 14px;
+    border-bottom: 1px solid var(--gray-100);
+    background: white;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child {
+    font-weight: 700;
+    color: var(--primary);
+    text-align: left;
+  }
+  .star { color: #FF991F; }
+
+  /* ── Chat Mockup ── */
+  .chat-window {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    margin: 24px 0;
+    border: 1px solid var(--gray-200);
+  }
+  .chat-titlebar {
+    background: var(--gray-50);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .chat-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+  .chat-dot.red { background: #FF5F57; }
+  .chat-dot.yellow { background: #FEBC2E; }
+  .chat-dot.green { background: #28C840; }
+  .chat-titlebar span {
+    margin-left: 8px;
+    font-size: 13px;
+    color: var(--gray-600);
+    font-weight: 500;
+  }
+  .chat-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 120px;
+  }
+  .msg {
+    display: flex;
+    gap: 10px;
+    max-width: 85%;
+  }
+  .msg.user { align-self: flex-end; flex-direction: row-reverse; }
+  .msg.ai { align-self: flex-start; }
+  .msg-avatar {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+  }
+  .msg.user .msg-avatar { background: var(--primary); }
+  .msg.ai .msg-avatar { background: linear-gradient(135deg, #6554C0, #00B8D9); }
+  .msg-bubble {
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .msg.user .msg-bubble {
+    background: var(--primary);
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+  .msg.ai .msg-bubble {
+    background: var(--gray-50);
+    color: var(--gray-800);
+    border-bottom-left-radius: 4px;
+  }
+  .msg-bubble code {
+    background: rgba(0,0,0,0.06);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+  .msg.user .msg-bubble code {
+    background: rgba(255,255,255,0.2);
+  }
+
+  /* ── Step ── */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step.green .step-num { background: var(--accent); }
+  .step.purple .step-num { background: var(--purple); }
+  .step-content { flex: 1; }
+  .step-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: 6px;
+  }
+  .step-desc {
+    font-size: 14px;
+    color: var(--gray-600);
+    line-height: 1.7;
+  }
+
+  /* ── Code Block ── */
+  .code-block {
+    background: #1E1E2E;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 12px 0;
+    overflow-x: auto;
+    position: relative;
+  }
+  .code-block pre {
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #CDD6F4;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  .code-block .lang-tag {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 11px;
+    color: #7F849C;
+    font-weight: 500;
+  }
+  .code-block .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 11px;
+    background: rgba(255,255,255,0.1);
+    color: #CDD6F4;
+    border: none;
+    padding: 3px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .code-block .copy-btn:hover { background: rgba(255,255,255,0.2); }
+  .hl-keyword { color: #CBA6F7; }
+  .hl-string { color: #A6E3A1; }
+  .hl-comment { color: #6C7086; font-style: italic; }
+  .hl-tag { color: #89B4FA; }
+
+  /* ── Tip / Warn Box ── */
+  .tip-box {
+    display: flex;
+    gap: 12px;
+    padding: 16px 20px;
+    border-radius: var(--radius);
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 1.6;
+    align-items: flex-start;
+  }
+  .tip-box .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .tip-box.tip { background: var(--primary-light); color: var(--gray-800); }
+  .tip-box.warn { background: var(--warn-light); color: var(--gray-800); }
+  .tip-box.green { background: var(--accent-light); color: var(--gray-800); }
+  .tip-box.purple { background: var(--purple-light); color: var(--gray-800); }
+  .tip-box b { color: var(--primary); }
+  .tip-box.warn b { color: var(--warn); }
+
+  /* ── Pros/Cons ── */
+  .pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .pros, .cons {
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .pros { background: var(--accent-light); }
+  .cons { background: var(--warn-light); }
+  .pros .label { color: var(--accent); font-weight: 700; margin-bottom: 8px; font-size: 15px; }
+  .cons .label { color: var(--warn); font-weight: 700; margin-bottom: 8px; font-size: 15px; }
+  .pros ul, .cons ul { padding-left: 18px; margin: 0; }
+  .pros li, .cons li { margin-bottom: 4px; }
+
+  /* ── Flow indicator ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .flow-node {
+    background: white;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    padding: 8px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .flow-node.green { border-color: var(--accent); color: var(--accent); }
+  .flow-arrow {
+    color: var(--gray-400);
+    font-size: 18px;
+  }
+
+  /* ── Route Badge ── */
+  .route-badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-left: 8px;
+    vertical-align: middle;
+    position: relative;
+    top: -2px;
+  }
+  .route-badge.core {
+    background: linear-gradient(135deg, #FF991F, #FF5630);
+    color: white;
+  }
+  .route-badge.enhance {
+    background: #EAE6FF;
+    color: var(--purple);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .cover h1 { font-size: 28px; }
+    .cover .subtitle { font-size: 16px; }
+    .section-title { font-size: 22px; }
+    .compare-table { font-size: 12px; }
+    .pros-cons { grid-template-columns: 1fr; }
+  }
+
+  /* ── Print / PDF ── */
+  @media print {
+    @page {
+      size: A4;
+      margin: 18mm 15mm 18mm 15mm;
+    }
+
+    body {
+      background: white !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .cover {
+      min-height: auto;
+      height: 100vh;
+      page-break-after: always;
+      break-after: page;
+      padding: 60px 40px;
+      margin: -18mm -15mm 0 -15mm;
+      width: calc(100% + 30mm);
+    }
+
+    .page {
+      padding: 0;
+    }
+
+    .section {
+      padding-top: 28px;
+      padding-bottom: 20px;
+      break-inside: avoid-page;
+    }
+
+    .section + .section {
+      border-top: 1px solid var(--gray-100);
+    }
+
+    .card,
+    .chat-window,
+    .compare-table,
+    .tip-box,
+    .flow,
+    .code-block,
+    .pros-cons {
+      break-inside: avoid;
+    }
+
+    .steps {
+      break-inside: avoid;
+    }
+
+    .section-title {
+      break-after: avoid;
+      break-inside: avoid;
+    }
+
+    .section-desc {
+      break-after: avoid;
+    }
+
+    .chat-body {
+      padding: 14px;
+      gap: 10px;
+    }
+
+    .msg-bubble {
+      padding: 10px 14px;
+      font-size: 12.5px;
+    }
+
+    .card {
+      padding: 20px;
+      margin-bottom: 14px;
+    }
+
+    .footer {
+      break-before: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ COVER ═══════════ -->
+<div class="cover">
+  <h1>WorkBuddy 个人周报<br>自动生成</h1>
+  <div class="subtitle">快速上手指南</div>
+  <div class="badges">
+    <div class="badge">📋 三种方案 + 两项进阶</div>
+    <div class="badge">⭐ Skill模版为核心路线</div>
+    <div class="badge">🚀 从简到深、可叠加</div>
+  </div>
+  <div class="meta">2026年5月 · 交付PM团队</div>
+</div>
+
+<div class="page">
+
+<!-- ═══════════ 1. 一分钟了解 ═══════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-num">1</span>一分钟了解</div>
+  <div class="section-desc">3种周报生成方案 × 2项进阶能力，按需组合，总有一款适合你。</div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th style="width:22%;">生成方案</th>
+        <th style="width:28%;">特点</th>
+        <th style="width:25%;">局限</th>
+        <th style="width:12%;">适合谁</th>
+        <th style="width:13%;">复用性</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>🔵 快速对话式</td>
+        <td>零门槛，随时拖入文件 + 问答即时生成</td>
+        <td>自由格式，每次需手动调整对齐模版</td>
+        <td>所有人</td>
+        <td><span class="star">★</span>☆☆</td>
+      </tr>
+      <tr>
+        <td>🟠 本地文件夹总结式</td>
+        <td>自动扫描项目文件夹，按创建时间筛选</td>
+        <td>只能捕获有文件留痕的工作</td>
+        <td>有归档习惯的PM</td>
+        <td><span class="star">★★</span>☆</td>
+      </tr>
+      <tr>
+        <td>🟢 Skill模版式 <span class="route-badge core">核心路线</span></td>
+        <td>一次建模长期复用，输出格式稳定一致</td>
+        <td>需5分钟一次性创建</td>
+        <td>追求效率与规范</td>
+        <td><span class="star">★★★</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="text-align:center;margin:24px 0 16px;font-size:15px;font-weight:700;color:var(--purple);">⬆ 选一种生成方案 ⬆ &nbsp;&nbsp;＋&nbsp;&nbsp; ⬇ 两项进阶可叠加 ⬇</div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th style="width:22%;">进阶能力</th>
+        <th style="width:28%;">效果</th>
+        <th style="width:25%;">搭配建议</th>
+        <th style="width:12%;">成本</th>
+        <th style="width:13%;">自动化</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="color:var(--purple);">🟣 定时自动化</td>
+        <td>每周五自动生成，只需审阅确认</td>
+        <td>搭配 Skill模版式 效果最佳</td>
+        <td>10分钟一次性</td>
+        <td><span class="star">★★★</span> 全自动</td>
+      </tr>
+      <tr>
+        <td style="color:#00B8D9;">📎 乐享归档</td>
+        <td>周报自动导入团队知识库，沉淀组织资产</td>
+        <td>搭配任意方案均可</td>
+        <td>5分钟一次性</td>
+        <td><span class="star">★★</span>☆ 一键</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box green">
+    <span class="icon">💡</span>
+    <span>推荐路线：<b>方案三（Skill模版式）</b>为核心，搭配<b>定时自动化</b>和<b>乐享归档</b>，实现「每周五自动生成周报 → 自动归档到知识库」的完整闭环。也可以先用方案一体验，再逐步升级。</span>
+  </div>
+</div>
+
+<!-- ═══════════ 2. 方案一：快速对话式 ═══════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-num">2</span>方案一：快速对话式</div>
+  <div class="section-desc">零门槛——随时拖入文件 + 问答即时存档，像聊天一样生成周报。</div>
+
+  <div class="flow">
+    <div class="flow-node">口述 / 拖入文件</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">AI 生成周报</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node green">导出 Excel</div>
+  </div>
+
+  <div class="chat-window">
+    <div class="chat-titlebar">
+      <div class="chat-dot red"></div>
+      <div class="chat-dot yellow"></div>
+      <div class="chat-dot green"></div>
+      <span>WorkBuddy</span>
+    </div>
+    <div class="chat-body">
+      <div class="msg user">
+        <div class="msg-avatar">你</div>
+        <div class="msg-bubble">
+          帮我生成本周周报：<br><br>
+          本周完成：<br>
+          1. With平台交付周报Dashboard第一版原型完成<br>
+          2. 交付保障中心数据看板方案确定<br>
+          3. 乐享知识库AI助手Prompt优化，新增合同评审FAQ模块<br><br>
+          下周计划：<br>
+          1. 推进With平台Dashboard与后端联调<br>
+          2. 合同评审Skill迭代至v1.7<br><br>
+          问题与需求：<br>
+          1. 企微机器人消息读取权限待管理员开通
+        </div>
+      </div>
+      <div class="msg ai">
+        <div class="msg-avatar">AI</div>
+        <div class="msg-bubble">
+          📋 <b>工作周报 05月14日 ~ 05月20日</b><br><br>
+          <b>1. 本周完成</b><br>
+          1. With平台交付周报Dashboard第一版原型完成<br>
+          2. 交付保障中心数据看板方案确定<br>
+          3. 乐享知识库AI助手Prompt优化，新增合同评审FAQ模块<br><br>
+          <b>2. 下周计划</b><br>
+          1. 推进With平台Dashboard与后端联调<br>
+          2. 合同评审Skill迭代至v1.7<br><br>
+          <b>3. 问题与需求</b><br>
+          1. 企微机器人消息读取权限待管理员开通
+        </div>
+      </div>
+      <div class="msg user">
+        <div class="msg-avatar">你</div>
+        <div class="msg-bubble">把上面的周报导出为Excel文件</div>
+      </div>
+      <div class="msg ai">
+        <div class="msg-avatar">AI</div>
+        <div class="msg-bubble">
+          ✅ 已生成周报Excel文件：<code>工作周报_20260520.xlsx</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pros-cons">
+    <div class="pros">
+      <div class="label">✅ 优点</div>
+      <ul>
+        <li>零门槛，随时开始</li>
+        <li>支持拖入文件让AI自动提取</li>
+        <li>适合临时应急或体验</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <div class="label">⚠️ 局限</div>
+      <ul>
+        <li>输出为自由格式，每次需手动调整才能对齐周报模版</li>
+        <li>无法沉淀格式规范，复用性差</li>
+        <li>每次口述内容质量参差不齐</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tip-box tip">
+    <span class="icon">💡</span>
+    <span>如果每周都要写周报，建议升级到<b>方案三（Skill模版式）</b>，一次建模长期复用，输出格式稳定一致。</span>
+  </div>
+</div>
+
+<!-- ═══════════ 3. 方案二：本地文件夹总结式 ═══════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-num" style="background:var(--orange);">3</span>方案二：本地文件夹总结式</div>
+  <div class="section-desc">项目文件放在本地文件夹？WorkBuddy 直接读取并自动总结，无需手动输入。</div>
+
+  <div class="flow">
+    <div class="flow-node" style="border-color:var(--orange);color:var(--orange);">指定文件夹</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="border-color:var(--orange);color:var(--orange);">AI 扫描读取</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="border-color:var(--orange);color:var(--orange);">自动总结</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node green">导出 Excel</div>
+  </div>
+
+  <div class="chat-window">
+    <div class="chat-titlebar">
+      <div class="chat-dot red"></div>
+      <div class="chat-dot yellow"></div>
+      <div class="chat-dot green"></div>
+      <span>WorkBuddy</span>
+    </div>
+    <div class="chat-body">
+      <div class="msg user">
+        <div class="msg-avatar">你</div>
+        <div class="msg-bubble">
+          读取 ~/Documents/项目进展/ 文件夹下本周新增或修改的所有文件，<br>
+          总结每个项目的进展，生成周报并导出Excel
+        </div>
+      </div>
+      <div class="msg ai">
+        <div class="msg-avatar">AI</div>
+        <div class="msg-bubble">
+          📂 正在扫描 <code>~/Documents/项目进展/</code> ...<br><br>
+          发现 <b>3</b> 个本周文件：<br>
+          · With平台_Dashboard原型_0516.docx<br>
+          · 乐享知识库_Prompt优化_0515.md<br>
+          · 合同评审Skill_迭代记录_0514.md<br><br>
+          正在读取并总结...<br><br>
+          📋 <b>工作周报 05月14日 ~ 05月20日</b><br><br>
+          <b>1. 本周完成</b><br>
+          1. With平台交付周报Dashboard第一版原型完成<br>
+          2. 交付保障中心数据看板方案确定<br>
+          3. 乐享知识库AI助手Prompt优化，新增合同评审FAQ模块<br><br>
+          <b>2. 下周计划</b><br>
+          1. 推进With平台Dashboard与后端联调<br>
+          2. 合同评审Skill迭代至v1.7<br><br>
+          <b>3. 问题与需求</b><br>
+          1. 企微机器人消息读取权限待管理员开通<br><br>
+          ✅ 已导出：<code>工作周报_20260520.xlsx</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pros-cons">
+    <div class="pros">
+      <div class="label">✅ 优点</div>
+      <ul>
+        <li>自动扫描文件夹，按文件创建时间筛选本周工作</li>
+        <li>无需手动输入，AI直接读取文件内容提取进展</li>
+        <li>支持 docx / pdf / md / txt / xlsx 等格式</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <div class="label">⚠️ 局限</div>
+      <ul>
+        <li>只能捕获<b>有文件留痕</b>的工作</li>
+        <li>口头沟通、会议决策等无文件的工作会被遗漏</li>
+        <li>输出格式不固定，每次需调整</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tip-box" style="background:var(--orange-light);">
+    <span class="icon">🟠</span>
+    <span>建议搭配<b>方案三 Skill模版式</b>使用：用本地文件夹做素材源，用Skill模版做格式规范，优势互补。</span>
+  </div>
+</div>
+
+<!-- ═══════════ 4. 方案三：Skill模版式（核心路线） ═══════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-num" style="background:var(--accent);">4</span>方案三：Skill模版式 <span class="route-badge core">核心路线</span></div>
+  <div class="section-desc">一次建模长期复用——拖入历史周报，AI逆向识别模版结构并优化字段，固化为专属Skill，后续只需提供素材即可按固定模版自动生成。</div>
+
+  <div class="flow">
+    <div class="flow-node" style="border-color:var(--accent);color:var(--accent);">拖入历史周报</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="border-color:var(--accent);color:var(--accent);">AI逆向识别模版</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="border-color:var(--accent);color:var(--accent);">优化字段并固化</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node green">每周按模版生成</div>
+  </div>
+
+  <!-- 4.1 从历史周报创建模板（核心步骤） -->
+  <div class="card card-accent-green" style="border-left:4px solid #FF991F;">
+    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:#FF991F;">⭐ 核心步骤：从历史周报逆向创建模板</h3>
+    <p style="font-size:14px;color:var(--gray-600);margin-bottom:16px;">最快的方式——直接把之前的周报文件拖进 WorkBuddy，AI 自动识别你的模板格式和字段，优化后一键生成专属 Skill：</p>
+    <div class="chat-window">
+      <div class="chat-titlebar">
+        <div class="chat-dot red"></div>
+        <div class="chat-dot yellow"></div>
+        <div class="chat-dot green"></div>
+        <span>WorkBuddy</span>
+      </div>
+      <div class="chat-body">
+        <div class="msg user">
+          <div class="msg-avatar">你</div>
+          <div class="msg-bubble">
+            <i>（拖入一份历史周报文件：工作周报_20260513.docx）</i><br><br>
+            识别这份周报的格式和字段，帮我创建一个周报 Skill，保持同样的模板风格
+          </div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">AI</div>
+          <div class="msg-bubble">
+            📖 已读取周报文件，识别到以下模板结构：<br><br>
+            <b>板块1</b>：本周完成 —— 按项目分行，每行包含「项目名+进展描述」<br>
+            <b>板块2</b>：下周计划 —— 同上格式<br>
+            <b>板块3</b>：问题与需求 —— 编号列表，标注需协调事项<br>
+            <b>风格</b>：简洁编号体，无客套话，项目名加粗<br><br>
+            建议优化以下字段：<br>
+            · <b>新增</b>「风险项」板块 —— 当前模板未区分风险，建议单独列出<br>
+            · <b>新增</b>周报日期范围自动计算 —— 无需手动输入日期<br>
+            · <b>优化</b>项目进展描述 —— 增加进度百分比或状态标签<br><br>
+            是否按此结构创建 Skill？可调整后再确认。
+          </div>
+        </div>
+        <div class="msg user">
+          <div class="msg-avatar">你</div>
+          <div class="msg-bubble">
+            按你建议的优化创建，加上风险项板块
+          </div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">AI</div>
+          <div class="msg-bubble">
+            ✅ 已创建 Skill：<b>weekly-report</b><br><br>
+            <b>模板结构：</b><br>
+            · 本周完成（项目名<b>加粗</b> + 进展描述）<br>
+            · 下周计划（同上格式）<br>
+            · 风险项（新增，标注等级与需协调事项）<br>
+            · 问题与需求（编号列表）<br>
+            · 日期范围自动计算<br><br>
+            💡 下次直接说「写周报」就能用。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4.2 手动描述创建 -->
+  <div class="card card-accent-green">
+    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:var(--accent);">🔧 或者：手动描述创建（5分钟）</h3>
+    <p style="font-size:14px;color:var(--gray-600);margin-bottom:16px;">没有历史周报？也可以直接告诉 AI 你的周报习惯和偏好：</p>
+    <div class="chat-window">
+      <div class="chat-titlebar">
+        <div class="chat-dot red"></div>
+        <div class="chat-dot yellow"></div>
+        <div class="chat-dot green"></div>
+        <span>WorkBuddy</span>
+      </div>
+      <div class="chat-body">
+        <div class="msg user">
+          <div class="msg-avatar">你</div>
+          <div class="msg-bubble">
+            帮我创建一个周报 Skill：<br><br>
+            1. <b>触发词</b>：「写周报」、「生成本周总结」时自动加载<br>
+            2. <b>格式</b>：本周完成的关键任务 + 下周计划 + 问题与需求<br>
+            3. <b>流程</b>：先扫描我的对话记录和工作文件收集素材，再问我有没有要补充的，确认后输出<br>
+            4. <b>语气</b>：简洁专业，每项一行编号，不要客套话<br>
+            5. <b>输出</b>：默认导出 Excel
+          </div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">AI</div>
+          <div class="msg-bubble">
+            ✅ 已创建 Skill：<b>weekly-report</b><br><br>
+            <b>Skill 内容预览：</b><br>
+            · 触发词：写周报 / 生成本周总结 / 本周总结 / 整理周报<br>
+            · 处理流程：<br>
+            &nbsp;① 收集素材 → 扫描对话记录 + 工作笔记文件<br>
+            &nbsp;② 补充确认 → 主动询问是否有遗漏、下周计划或求助项<br>
+            &nbsp;③ 输出周报 → 按模板生成并导出Excel<br>
+            · 输出模版：<br>
+            &nbsp;&nbsp;XX工作周报 MM月DD日 ~ MM月DD日<br>
+            &nbsp;&nbsp;本周完成（每行一条，按序号）<br>
+            &nbsp;&nbsp;下周计划（每行一条）<br>
+            &nbsp;&nbsp;问题与需求（需要关注的问题和协助）<br>
+            · 约束：内容简明有据，不知道的不编<br><br>
+            💡 下次直接说「写周报」就能用。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4.3 日常使用 -->
+  <div class="card card-accent-green">
+    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:var(--accent);">📋 日常使用（一句话搞定）</h3>
+    <div class="chat-window">
+      <div class="chat-titlebar">
+        <div class="chat-dot red"></div>
+        <div class="chat-dot yellow"></div>
+        <div class="chat-dot green"></div>
+        <span>WorkBuddy</span>
+      </div>
+      <div class="chat-body">
+        <div class="msg user">
+          <div class="msg-avatar">你</div>
+          <div class="msg-bubble">写周报</div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">AI</div>
+          <div class="msg-bubble">
+            📂 正在扫描本周素材... 发现以下工作记录：<br>
+            · With平台周报Dashboard原型完成<br>
+            · 交付保障中心数据看板方案讨论<br>
+            · 乐享知识库AI助手Prompt优化<br><br>
+            🤔 有以下需要确认的内容：<br>
+            1. 这周的With平台对接进度如何？是否需要补充？<br>
+            2. 下周有哪些计划中的任务？<br>
+            3. 有没有需要协调的资源或问题？
+          </div>
+        </div>
+        <div class="msg user">
+          <div class="msg-avatar">你</div>
+          <div class="msg-bubble">
+            补充一下：<br>
+            - With平台已完成Dashboard第一版，下周推进联调<br>
+            - 乐享知识库新增了合同评审FAQ模块<br>
+            - 需要协调：企微机器人权限还没开通
+          </div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">AI</div>
+          <div class="msg-bubble">
+            📋 <b>工作周报 05月14日 ~ 05月20日</b><br><br>
+            <b>1. 本周完成</b><br>
+            1. With平台交付周报Dashboard第一版原型完成<br>
+            2. 交付保障中心数据看板方案确定<br>
+            3. 乐享知识库AI助手Prompt优化，新增合同评审FAQ模块<br><br>
+            <b>2. 下周计划</b><br>
+            1. 推进With平台Dashboard与后端联调<br>
+            2. 合同评审Skill迭代至v1.7<br>
+            3. 企微机器人权限开通跟进<br><br>
+            <b>3. 问题与需求</b><br>
+            1. 企微机器人消息读取权限待管理员开通<br><br>
+            ✅ 已导出：<code>工作周报_20260520.xlsx</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4.4 每日记录进展 -->
+  <div class="card card-accent-green">
+    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:var(--accent);">📝 日常关键：每天记录进展</h3>
+    <p style="font-size:14px;color:var(--gray-600);margin-bottom:16px;">周报质量取决于素材积累。养成每天在 WorkBuddy 中记录工作进展的习惯，周五生成周报时素材自动汇总：</p>
+    <div class="chat-window">
+      <div class="chat-titlebar">
+        <div class="chat-dot red"></div>
+        <div class="chat-dot yellow"></div>
+        <div class="chat-dot green"></div>
+        <span>WorkBuddy</span>
+      </div>
+      <div class="chat-body">
+        <div class="msg user">
+          <div class="msg-avatar">你</div>
+          <div class="msg-bubble">
+            记录今日进展：<br>
+            1. With平台Dashboard原型完成第一版<br>
+            2. 和后端对齐了接口方案，下周联调<br>
+            3. 乐享知识库Prompt优化，新增FAQ模块
+          </div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">AI</div>
+          <div class="msg-bubble">
+            ✅ 已记录今日进展（3项）<br><br>
+            💡 周五说「写周报」时，我会自动汇总本周所有记录。
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box green" style="margin-top:12px;">
+      <span class="icon">⏰</span>
+      <span><b>建议习惯</b>：每天下班前花<b>1分钟</b>在 WorkBuddy 中记录当日关键事项。可以口述要点，也可以拖入当天产出的文件让 AI 自动提取。坚持记录，周五周报几乎不需要额外补充。</span>
+    </div>
+  </div>
+
+  <!-- 4.5 可定制项 + 持续完善 -->
+  <div class="card card-accent-green" style="border-left:4px solid var(--accent);">
+    <h3 style="font-size:17px;font-weight:700;margin-bottom:12px;color:var(--accent);">🎨 你可以随时调整什么</h3>
+    <table class="compare-table" style="margin:0;">
+      <thead>
+        <tr>
+          <th style="text-align:left;">定制维度</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:left;font-weight:700;">周报结构</td>
+          <td>3P格式 / 客户进展+风险+计划 / 按项目分块 / 自定义板块</td>
+        </tr>
+        <tr>
+          <td style="text-align:left;font-weight:700;">输出语气</td>
+          <td>简洁编号列表 / 详细叙述段落 / 要点+展开混合</td>
+        </tr>
+        <tr>
+          <td style="text-align:left;font-weight:700;">数据来源</td>
+          <td>扫描对话历史 / 读本地文件夹 / 读日志文件 / 手动口述</td>
+        </tr>
+        <tr>
+          <td style="text-align:left;font-weight:700;">交互方式</td>
+          <td>直接输出 / 先确认再输出 / 迭代修改模式</td>
+        </tr>
+        <tr>
+          <td style="text-align:left;font-weight:700;">输出格式</td>
+          <td>Excel / PDF / Markdown / HTML网页</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="tip-box green" style="margin-top:16px;">
+      <span class="icon">🔄</span>
+      <span>Skill 创建后可以持续优化。比如用了一两周后说「把我的周报Skill加上数据指标模块」或「改成按项目分块的格式」，AI 会立即更新。随项目变化持续迭代，模版越用越贴合。</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 5. 进阶一：定时自动化 ═══════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-num" style="background:var(--purple);">5</span>进阶一：定时自动化 <span class="route-badge enhance">可叠加</span></div>
+  <div class="section-desc">单次周报生成后，设置定时任务让它每周自动执行，你只需审阅确认。</div>
+
+  <div class="flow">
+    <div class="flow-node" style="border-color:var(--purple);color:var(--purple);">创建自动化</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="border-color:var(--purple);color:var(--purple);">每周五自动执行</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="border-color:var(--purple);color:var(--purple);">审阅确认</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node green">完成</div>
+  </div>
+
+  <div class="chat-window">
+    <div class="chat-titlebar">
+      <div class="chat-dot red"></div>
+      <div class="chat-dot yellow"></div>
+      <div class="chat-dot green"></div>
+      <span>WorkBuddy</span>
+    </div>
+    <div class="chat-body">
+      <div class="msg user">
+        <div class="msg-avatar">你</div>
+        <div class="msg-bubble">
+          创建一个自动化任务：<br>
+          - 名称：每周五生成个人周报<br>
+          - 时间：每周五 16:00<br>
+          - 内容：扫描本周对话记录和工作文件，按「本周完成+下周计划+问题与需求」格式生成周报<br>
+          - 导出为Excel文件
+        </div>
+      </div>
+      <div class="msg ai">
+        <div class="msg-avatar">AI</div>
+        <div class="msg-bubble">
+          ✅ 自动化已创建<br><br>
+          <b>名称</b>：每周五生成个人周报<br>
+          <b>计划</b>：每周五 16:00<br>
+          <b>状态</b>：🟢 ACTIVE<br><br>
+          下次执行：2026-05-22 16:00
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box warn">
+    <span class="icon">⚠️</span>
+    <span><b>注意</b>：自动化需要你在 WorkBuddy 中保持活跃对话记录，或配合每日记录习惯使用效果最佳。搭配<b>方案三 Skill模版式</b>可以让自动化输出格式稳定一致。</span>
+  </div>
+</div>
+
+<!-- ═══════════ 6. 进阶二：乐享归档 ═══════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-num" style="background:#00B8D9;">6</span>进阶二：乐享归档 <span class="route-badge enhance">可叠加</span></div>
+  <div class="section-desc">周报生成后，导入乐享指定知识库你的个人文件夹，团队可随时查阅，沉淀为组织资产。</div>
+
+  <div class="flow">
+    <div class="flow-node" style="border-color:#00B8D9;color:#00B8D9;">生成周报</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="border-color:#00B8D9;color:#00B8D9;">获取个人文件夹链接</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="border-color:#00B8D9;color:#00B8D9;">导入乐享</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node green">团队可查阅</div>
+  </div>
+
+  <!-- 6.1 前置准备 -->
+  <div class="card" style="border-left:4px solid #00B8D9;">
+    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:#00B8D9;">🔑 前置准备：获取你的个人文件夹链接（一次性）</h3>
+    <p style="font-size:14px;color:var(--gray-600);margin-bottom:16px;">导入周报到乐享，需要知道你的个人文件夹链接。只需操作一次：</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num" style="background:#00B8D9;">1</div>
+        <div class="step-content">
+          <div class="step-title">打开团队知识库</div>
+          <div class="step-desc">点击链接进入知识库：<br><code style="background:var(--gray-50);padding:2px 8px;border-radius:4px;font-size:13px;">https://csig.lexiangla.com/spaces/a8b6822538204d62bbedb720a08fe37f</code></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#00B8D9;">2</div>
+        <div class="step-content">
+          <div class="step-title">找到你的个人文件夹</div>
+          <div class="step-desc">在知识库目录中找到以你名字命名的文件夹</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#00B8D9;">3</div>
+        <div class="step-content">
+          <div class="step-title">复制文件夹链接</div>
+          <div class="step-desc">点击进入你的文件夹，复制浏览器地址栏中的链接，格式类似：<br><code style="background:var(--gray-50);padding:2px 8px;border-radius:4px;font-size:13px;">https://csig.lexiangla.com/pages/xxxxxx</code></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#00B8D9;">4</div>
+        <div class="step-content">
+          <div class="step-title">记录这个链接</div>
+          <div class="step-desc">后续创建 Skill 和写 Prompt 时都需要用到，建议保存到备忘录</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6.2 创建归档 Skill -->
+  <div class="card" style="border-left:4px solid #00B8D9;">
+    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:#00B8D9;">🔧 创建周报归档 Skill（一次性）</h3>
+    <p style="font-size:14px;color:var(--gray-600);margin-bottom:16px;">创建一个专属 Skill，把你的个人文件夹链接写进去，以后一句话即可归档：</p>
+    <div class="chat-window">
+      <div class="chat-titlebar">
+        <div class="chat-dot red"></div>
+        <div class="chat-dot yellow"></div>
+        <div class="chat-dot green"></div>
+        <span>WorkBuddy</span>
+      </div>
+      <div class="chat-body">
+        <div class="msg user">
+          <div class="msg-avatar">你</div>
+          <div class="msg-bubble">
+            帮我创建一个周报归档 Skill：<br><br>
+            1. <b>触发词</b>：「归档周报」、「周报导入乐享」时自动加载<br>
+            2. <b>目标知识库</b>：交付中心周报（<code>https://csig.lexiangla.com/spaces/a8b6822538204d62bbedb720a08fe37f</code>）<br>
+            3. <b>我的文件夹</b>：XXX的个人文件夹（<code>https://csig.lexiangla.com/pages/xxxxxx</code>）<br>
+            4. <b>操作</b>：将当前周报内容导入到我的文件夹下，页面标题格式为「工作周报_MMDD~MMDD」<br>
+            5. <b>格式</b>：使用 Markdown 格式导入，保持结构化排版
+          </div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">AI</div>
+          <div class="msg-bubble">
+            ✅ 已创建 Skill：<b>weekly-report-archive</b><br><br>
+            <b>Skill 内容预览：</b><br>
+            · 触发词：归档周报 / 周报导入乐享<br>
+            · 目标知识库：交付中心周报<br>
+            · 归档位置：XXX的个人文件夹<br>
+            · 导入格式：Markdown<br>
+            · 页面标题：工作周报_MMDD~MMDD<br><br>
+            💡 下次周报生成后，说「归档周报」即可一键导入。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6.3 日常使用 -->
+  <div class="card" style="border-left:4px solid #00B8D9;">
+    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:#00B8D9;">📋 日常使用：周报生成 + 归档</h3>
+    <div class="chat-window">
+      <div class="chat-titlebar">
+        <div class="chat-dot red"></div>
+        <div class="chat-dot yellow"></div>
+        <div class="chat-dot green"></div>
+        <span>WorkBuddy</span>
+      </div>
+      <div class="chat-body">
+        <div class="msg user">
+          <div class="msg-avatar">你</div>
+          <div class="msg-bubble">写周报</div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">AI</div>
+          <div class="msg-bubble">
+            📋 <b>工作周报 05月14日 ~ 05月20日</b><br><br>
+            <b>1. 本周完成</b><br>
+            1. With平台交付周报Dashboard第一版原型完成<br>
+            2. 乐享知识库AI助手Prompt优化<br><br>
+            <b>2. 下周计划</b><br>
+            1. 推进With平台Dashboard联调<br><br>
+            <b>3. 问题与需求</b><br>
+            1. 企微机器人消息读取权限待开通<br><br>
+            ✅ 已导出：<code>工作周报_20260520.xlsx</code>
+          </div>
+        </div>
+        <div class="msg user">
+          <div class="msg-avatar">你</div>
+          <div class="msg-bubble">归档周报</div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">AI</div>
+          <div class="msg-bubble">
+            📂 正在导入乐享知识库...<br><br>
+            ✅ 归档完成<br>
+            <b>知识库</b>：交付中心周报<br>
+            <b>归档位置</b>：XXX的个人文件夹<br>
+            <b>页面标题</b>：工作周报_0514~0520<br>
+            <b>链接</b>：<code>https://csig.lexiangla.com/pages/xxxxxx</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6.4 全链路组合 -->
+  <div class="card" style="border-left:4px solid #00B8D9;">
+    <h3 style="font-size:17px;font-weight:700;margin-bottom:12px;color:#00B8D9;">🔄 终极组合：生成 + 定时 + 归档一体化</h3>
+    <p style="font-size:14px;color:var(--gray-600);margin-bottom:12px;">将生成和归档写进同一个 Skill 或自动化 Prompt，实现完整闭环：</p>
+    <div class="code-block">
+<pre><span class="hl-comment">// 写进周报 Skill 的末尾步骤</span>
+周报生成后自动执行——
+将周报内容导入乐享知识库「交付中心周报」，
+目标文件夹：我的个人文件夹（链接写在Skill中），
+页面标题：工作周报_MMDD~MMDD
+
+<span class="hl-comment">// 或者写进定时自动化的 Prompt</span>
+创建自动化：每周五16:00执行——
+1. 扫描本周对话记录，生成周报并导出Excel
+2. <span class="hl-keyword">自动归档</span>到乐享知识库我的个人文件夹下</pre>
+    </div>
+  </div>
+
+  <div class="tip-box warn">
+    <span class="icon">⚠️</span>
+    <span><b>重要</b>：导入乐享时必须指定你的<b>个人文件夹链接</b>（而非知识库根链接），否则周报会创建到错误位置。如果文件夹链接变了，记得更新 Skill 中的链接。</span>
+  </div>
+
+  <div class="tip-box" style="background:#E6FFFA;">
+    <span class="icon">💡</span>
+    <span>乐享知识库支持 <b>Markdown / HTML</b> 格式导入，周报内容会保持结构化排版。搭配乐享的评论和订阅功能，团队成员还能及时收到周报更新通知。</span>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<div class="footer">
+  WorkBuddy 个人周报自动生成 · 快速上手指南 · 2026年5月
+</div>
+
+</body>
+</html>
