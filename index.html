@@ -780,22 +780,64 @@
 <!-- ═══════════ 4. 方案三：Skill模版式（核心路线） ═══════════ -->
 <div class="section">
   <div class="section-title"><span class="section-num" style="background:var(--accent);">4</span>方案三：Skill模版式 <span class="route-badge core">核心路线</span></div>
-  <div class="section-desc">一次建模长期复用——拖入历史周报，AI逆向识别模版结构并优化字段，固化为专属Skill，后续只需提供素材即可按固定模版自动生成。</div>
+  <div class="section-desc">一次建模长期复用——上传历史周报，AI 逆向识别模版并创建专属 Skill，后续说一句「写周报」即可按固定模版自动生成。</div>
 
   <div class="flow">
-    <div class="flow-node" style="border-color:var(--accent);color:var(--accent);">拖入历史周报</div>
+    <div class="flow-node" style="border-color:var(--accent);color:var(--accent);">上传历史周报</div>
     <div class="flow-arrow">→</div>
-    <div class="flow-node" style="border-color:var(--accent);color:var(--accent);">AI逆向识别模版</div>
+    <div class="flow-node" style="border-color:var(--accent);color:var(--accent);">AI 识别模版</div>
     <div class="flow-arrow">→</div>
-    <div class="flow-node" style="border-color:var(--accent);color:var(--accent);">优化字段并固化</div>
+    <div class="flow-node" style="border-color:var(--accent);color:var(--accent);">创建专属 Skill</div>
     <div class="flow-arrow">→</div>
-    <div class="flow-node green">每周按模版生成</div>
+    <div class="flow-node green">每周一键生成</div>
   </div>
 
-  <!-- 4.1 从历史周报创建模板（核心步骤） -->
+  <!-- 4.1 Skill 五步流程 -->
+  <div class="card card-accent-green">
+    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:var(--accent);">📋 Skill 五步流程</h3>
+    <div class="steps">
+      <div class="step green">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">模板识别</div>
+          <div class="step-desc">拖入历史周报 Excel，AI 自动解析字段（本周完成 / 下周计划 / 风险问题等），保存为你的个人专属模板，后续重复使用。</div>
+        </div>
+      </div>
+      <div class="step green">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">日常记录</div>
+          <div class="step-desc">每天在工作中随手 @WorkBuddy 记录进展，格式如「记录：今天完成了XX，风险是YY」，自动按日期归档，周末一键汇总。</div>
+        </div>
+      </div>
+      <div class="step green">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">周报生成</div>
+          <div class="step-desc">说「写周报」，AI 读取本周每日记录，按模板字段自动归类填充，生成初稿后提交你确认。</div>
+        </div>
+      </div>
+      <div class="step green">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">补充确认</div>
+          <div class="step-desc">AI 主动询问是否有补充内容、下周计划、需要求助的事项。你确认后输出最终周报，支持多轮修改直到满意。</div>
+        </div>
+      </div>
+      <div class="step green">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">导出 Excel</div>
+          <div class="step-desc">输出 .xlsx 文件，命名格式：工作周报_MM月DD日~MM月DD日.xlsx。表格含三个 Sheet：本周完成、下周计划、风险/问题。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4.2 一次性创建：上传模版，生成专属 Skill -->
   <div class="card card-accent-green" style="border-left:4px solid #FF991F;">
-    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:#FF991F;">⭐ 核心步骤：从历史周报逆向创建模板</h3>
-    <p style="font-size:14px;color:var(--gray-600);margin-bottom:16px;">最快的方式——直接把之前的周报文件拖进 WorkBuddy，AI 自动识别你的模板格式和字段，优化后一键生成专属 Skill：</p>
+    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:#FF991F;">⭐ 一次性创建：上传模版，生成专属 Skill</h3>
+    <p style="font-size:14px;color:var(--gray-600);margin-bottom:16px;">把你的周报需求和历史周报一起丢给 WorkBuddy，AI 自动创建专属 Skill：</p>
     <div class="chat-window">
       <div class="chat-titlebar">
         <div class="chat-dot red"></div>
@@ -806,88 +848,50 @@
       <div class="chat-body">
         <div class="msg user">
           <div class="msg-avatar">你</div>
-          <div class="msg-bubble">
-            <i>（拖入一份历史周报文件：工作周报_20260513.docx）</i><br><br>
-            识别这份周报的格式和字段，帮我创建一个周报 Skill，保持同样的模板风格
+          <div class="msg-bubble" style="font-size:13px;line-height:1.7;">
+            帮我写一个skill，名称是<b>weekly-report</b>，用于智慧零售交付项目个人周报自动生成。<br><br>
+            <b>## 任务目标</b><br>
+            根据我提供的本周工作任务相关素材（WorkBuddy对话历史、本地工作文档、会议纪要、项目进展记录等），按固定模板自动总结并输出结构化的个人周报。支持Skill模板生成路径，并可叠加定时自动化与乐享归档能力。<br><br>
+            <b>## 触发条件</b><br>
+            当我说以下关键词或类似表达时，立即加载本 Skill：<br>
+            "写周报"、"生成周报"、"本周总结"、"整理周报"、"周报总结"、"出周报"、"我的周报"、"weekly report"、"week summary"<br><br>
+            <b>## 处理步骤</b><br>
+            <b>步骤一：模板识别</b> — 读取上传的历史周报文件（Excel），自动解析字段，保存为个人专属模板<br>
+            <b>步骤二：日常记录</b> — 每天随手@WorkBuddy记录进展，格式："记录：今天完成了XX，风险是YY"<br>
+            <b>步骤三：周报生成</b> — 读取本周每日记录，按模板字段自动归类填充<br>
+            <b>步骤四：补充确认</b> — 主动询问是否有补充、下周计划、需要求助，确认后输出最终周报<br>
+            <b>步骤五：导出</b> — 生成 Excel，命名：工作周报_MM月DD日~MM月DD日.xlsx<br><br>
+            <b>## 格式规范</b><br>
+            · 每个任务占一行，按顺序编号<br>
+            · 项目名称用【】标注<br>
+            · 关键风险项前加 🚨 标识<br>
+            · 内容简明扼要，有理有据<br>
+            · 不知道的内容不要瞎编，标注"待补充"<br><br>
+            <b>## 铁律约束</b><br>
+            ① 内容真实有据，不瞎编<br>
+            ② 最终周报必须经我确认后才导出<br>
+            ③ 严格按模板输出，编号一致、项目对齐<br>
+            ④ 风险项必须用 🚨 标注<br><br>
+            <i>（拖入一份历史周报文件：工作周报_20260513.xlsx）</i>
           </div>
         </div>
         <div class="msg ai">
           <div class="msg-avatar">AI</div>
           <div class="msg-bubble">
             📖 已读取周报文件，识别到以下模板结构：<br><br>
-            <b>板块1</b>：本周完成 —— 按项目分行，每行包含「项目名+进展描述」<br>
+            <b>板块1</b>：本周完成 —— 按项目分行，每行「项目名+关键任务及结果」<br>
             <b>板块2</b>：下周计划 —— 同上格式<br>
-            <b>板块3</b>：问题与需求 —— 编号列表，标注需协调事项<br>
-            <b>风格</b>：简洁编号体，无客套话，项目名加粗<br><br>
-            建议优化以下字段：<br>
-            · <b>新增</b>「风险项」板块 —— 当前模板未区分风险，建议单独列出<br>
-            · <b>新增</b>周报日期范围自动计算 —— 无需手动输入日期<br>
-            · <b>优化</b>项目进展描述 —— 增加进度百分比或状态标签<br><br>
-            是否按此结构创建 Skill？可调整后再确认。
-          </div>
-        </div>
-        <div class="msg user">
-          <div class="msg-avatar">你</div>
-          <div class="msg-bubble">
-            按你建议的优化创建，加上风险项板块
-          </div>
-        </div>
-        <div class="msg ai">
-          <div class="msg-avatar">AI</div>
-          <div class="msg-bubble">
+            <b>板块3</b>：风险/问题 —— 编号列表，标注需协调事项<br>
+            <b>风格</b>：简洁编号体，项目名用【】标注，风险项加 🚨<br><br>
             ✅ 已创建 Skill：<b>weekly-report</b><br><br>
-            <b>模板结构：</b><br>
-            · 本周完成（项目名<b>加粗</b> + 进展描述）<br>
-            · 下周计划（同上格式）<br>
-            · 风险项（新增，标注等级与需协调事项）<br>
-            · 问题与需求（编号列表）<br>
-            · 日期范围自动计算<br><br>
-            💡 下次直接说「写周报」就能用。
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4.2 手动描述创建 -->
-  <div class="card card-accent-green">
-    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:var(--accent);">🔧 或者：手动描述创建（5分钟）</h3>
-    <p style="font-size:14px;color:var(--gray-600);margin-bottom:16px;">没有历史周报？也可以直接告诉 AI 你的周报习惯和偏好：</p>
-    <div class="chat-window">
-      <div class="chat-titlebar">
-        <div class="chat-dot red"></div>
-        <div class="chat-dot yellow"></div>
-        <div class="chat-dot green"></div>
-        <span>WorkBuddy</span>
-      </div>
-      <div class="chat-body">
-        <div class="msg user">
-          <div class="msg-avatar">你</div>
-          <div class="msg-bubble">
-            帮我创建一个周报 Skill：<br><br>
-            1. <b>触发词</b>：「写周报」、「生成本周总结」时自动加载<br>
-            2. <b>格式</b>：本周完成的关键任务 + 下周计划 + 问题与需求<br>
-            3. <b>流程</b>：先扫描我的对话记录和工作文件收集素材，再问我有没有要补充的，确认后输出<br>
-            4. <b>语气</b>：简洁专业，每项一行编号，不要客套话<br>
-            5. <b>输出</b>：默认导出 Excel
-          </div>
-        </div>
-        <div class="msg ai">
-          <div class="msg-avatar">AI</div>
-          <div class="msg-bubble">
-            ✅ 已创建 Skill：<b>weekly-report</b><br><br>
-            <b>Skill 内容预览：</b><br>
-            · 触发词：写周报 / 生成本周总结 / 本周总结 / 整理周报<br>
-            · 处理流程：<br>
-            &nbsp;① 收集素材 → 扫描对话记录 + 工作笔记文件<br>
-            &nbsp;② 补充确认 → 主动询问是否有遗漏、下周计划或求助项<br>
-            &nbsp;③ 输出周报 → 按模板生成并导出Excel<br>
-            · 输出模版：<br>
-            &nbsp;&nbsp;XX工作周报 MM月DD日 ~ MM月DD日<br>
-            &nbsp;&nbsp;本周完成（每行一条，按序号）<br>
-            &nbsp;&nbsp;下周计划（每行一条）<br>
-            &nbsp;&nbsp;问题与需求（需要关注的问题和协助）<br>
-            · 约束：内容简明有据，不知道的不编<br><br>
+            <b>触发词</b>：写周报 / 生成周报 / 本周总结 / 整理周报 / 周报总结 / 出周报 / 我的周报<br>
+            <b>处理流程</b>：<br>
+            &nbsp;① 模板识别 → 读取上传的历史周报，解析字段并保存模板<br>
+            &nbsp;② 日常记录 → 每天随手记录进展，按日期归档<br>
+            &nbsp;③ 周报生成 → 读取本周记录，按模板自动归类填充<br>
+            &nbsp;④ 补充确认 → 主动询问是否有补充，确认后输出最终版<br>
+            &nbsp;⑤ 导出 Excel → 文件命名：工作周报_MM月DD日~MM月DD日.xlsx<br><br>
+            <b>格式规范</b>：项目名用【】标注，风险项加 🚨，内容简明不瞎编<br><br>
             💡 下次直接说「写周报」就能用。
           </div>
         </div>
@@ -897,7 +901,29 @@
 
   <!-- 4.3 日常使用 -->
   <div class="card card-accent-green">
-    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:var(--accent);">📋 日常使用（一句话搞定）</h3>
+    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:var(--accent);">💬 日常使用示例</h3>
+    <div class="chat-window">
+      <div class="chat-titlebar">
+        <div class="chat-dot red"></div>
+        <div class="chat-dot yellow"></div>
+        <div class="chat-dot green"></div>
+        <span>WorkBuddy</span>
+      </div>
+      <div class="chat-body">
+        <div class="msg user">
+          <div class="msg-avatar">你</div>
+          <div class="msg-bubble">记录：今天完成了With平台Dashboard第一版原型，风险是企微机器人权限还没开通</div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-avatar">AI</div>
+          <div class="msg-bubble">
+            ✅ 已记录今日进展（2项）<br><br>
+            💡 周五说「写周报」时，我会自动汇总本周所有记录。
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="height:16px;"></div>
     <div class="chat-window">
       <div class="chat-titlebar">
         <div class="chat-dot red"></div>
@@ -914,22 +940,20 @@
           <div class="msg-avatar">AI</div>
           <div class="msg-bubble">
             📂 正在扫描本周素材... 发现以下工作记录：<br>
-            · With平台周报Dashboard原型完成<br>
-            · 交付保障中心数据看板方案讨论<br>
-            · 乐享知识库AI助手Prompt优化<br><br>
+            · 【With平台】Dashboard第一版原型完成<br>
+            · 【交付保障中心】数据看板方案确定<br>
+            · 【乐享知识库】AI助手Prompt优化，新增合同评审FAQ模块<br><br>
             🤔 有以下需要确认的内容：<br>
-            1. 这周的With平台对接进度如何？是否需要补充？<br>
-            2. 下周有哪些计划中的任务？<br>
-            3. 有没有需要协调的资源或问题？
+            1. 下周有哪些计划中的任务？<br>
+            2. 有没有需要协调的资源或问题？
           </div>
         </div>
         <div class="msg user">
           <div class="msg-avatar">你</div>
           <div class="msg-bubble">
-            补充一下：<br>
-            - With平台已完成Dashboard第一版，下周推进联调<br>
-            - 乐享知识库新增了合同评审FAQ模块<br>
-            - 需要协调：企微机器人权限还没开通
+            补充：<br>
+            - 下周推进With平台联调，合同评审Skill迭代至v1.7<br>
+            - 🚨 企微机器人权限还没开通，需要管理员协助
           </div>
         </div>
         <div class="msg ai">
@@ -937,94 +961,57 @@
           <div class="msg-bubble">
             📋 <b>工作周报 05月14日 ~ 05月20日</b><br><br>
             <b>1. 本周完成</b><br>
-            1. With平台交付周报Dashboard第一版原型完成<br>
-            2. 交付保障中心数据看板方案确定<br>
-            3. 乐享知识库AI助手Prompt优化，新增合同评审FAQ模块<br><br>
+            1. 【With平台】交付周报Dashboard第一版原型完成<br>
+            2. 【交付保障中心】数据看板方案确定<br>
+            3. 【乐享知识库】AI助手Prompt优化，新增合同评审FAQ模块<br><br>
             <b>2. 下周计划</b><br>
-            1. 推进With平台Dashboard与后端联调<br>
-            2. 合同评审Skill迭代至v1.7<br>
-            3. 企微机器人权限开通跟进<br><br>
-            <b>3. 问题与需求</b><br>
-            1. 企微机器人消息读取权限待管理员开通<br><br>
-            ✅ 已导出：<code>工作周报_20260520.xlsx</code>
+            1. 【With平台】推进Dashboard与后端联调<br>
+            2. 【合同评审】Skill迭代至v1.7<br><br>
+            <b>3. 风险/问题</b><br>
+            1. 🚨 【企微机器人】消息读取权限待管理员开通<br><br>
+            ✅ 已导出：<code>工作周报_0514~0520.xlsx</code>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 4.4 每日记录进展 -->
-  <div class="card card-accent-green">
-    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:var(--accent);">📝 日常关键：每天记录进展</h3>
-    <p style="font-size:14px;color:var(--gray-600);margin-bottom:16px;">周报质量取决于素材积累。养成每天在 WorkBuddy 中记录工作进展的习惯，周五生成周报时素材自动汇总：</p>
-    <div class="chat-window">
-      <div class="chat-titlebar">
-        <div class="chat-dot red"></div>
-        <div class="chat-dot yellow"></div>
-        <div class="chat-dot green"></div>
-        <span>WorkBuddy</span>
-      </div>
-      <div class="chat-body">
-        <div class="msg user">
-          <div class="msg-avatar">你</div>
-          <div class="msg-bubble">
-            记录今日进展：<br>
-            1. With平台Dashboard原型完成第一版<br>
-            2. 和后端对齐了接口方案，下周联调<br>
-            3. 乐享知识库Prompt优化，新增FAQ模块
-          </div>
-        </div>
-        <div class="msg ai">
-          <div class="msg-avatar">AI</div>
-          <div class="msg-bubble">
-            ✅ 已记录今日进展（3项）<br><br>
-            💡 周五说「写周报」时，我会自动汇总本周所有记录。
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="tip-box green" style="margin-top:12px;">
-      <span class="icon">⏰</span>
-      <span><b>建议习惯</b>：每天下班前花<b>1分钟</b>在 WorkBuddy 中记录当日关键事项。可以口述要点，也可以拖入当天产出的文件让 AI 自动提取。坚持记录，周五周报几乎不需要额外补充。</span>
-    </div>
-  </div>
-
-  <!-- 4.5 可定制项 + 持续完善 -->
+  <!-- 4.4 格式规范与铁律 -->
   <div class="card card-accent-green" style="border-left:4px solid var(--accent);">
-    <h3 style="font-size:17px;font-weight:700;margin-bottom:12px;color:var(--accent);">🎨 你可以随时调整什么</h3>
-    <table class="compare-table" style="margin:0;">
+    <h3 style="font-size:17px;font-weight:700;margin-bottom:12px;color:var(--accent);">📏 格式规范 &amp; 铁律</h3>
+    <table class="compare-table" style="margin:0 0 16px;">
       <thead>
         <tr>
-          <th style="text-align:left;">定制维度</th>
+          <th style="text-align:left;">规范项</th>
           <th>说明</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td style="text-align:left;font-weight:700;">周报结构</td>
-          <td>3P格式 / 客户进展+风险+计划 / 按项目分块 / 自定义板块</td>
+          <td style="text-align:left;font-weight:700;">项目标注</td>
+          <td>项目名用【】标注，如【With平台】</td>
         </tr>
         <tr>
-          <td style="text-align:left;font-weight:700;">输出语气</td>
-          <td>简洁编号列表 / 详细叙述段落 / 要点+展开混合</td>
+          <td style="text-align:left;font-weight:700;">风险标识</td>
+          <td>关键风险项前加 🚨，确保一目了然</td>
         </tr>
         <tr>
-          <td style="text-align:left;font-weight:700;">数据来源</td>
-          <td>扫描对话历史 / 读本地文件夹 / 读日志文件 / 手动口述</td>
+          <td style="text-align:left;font-weight:700;">编号格式</td>
+          <td>每个任务占一行，按顺序编号</td>
         </tr>
         <tr>
-          <td style="text-align:left;font-weight:700;">交互方式</td>
-          <td>直接输出 / 先确认再输出 / 迭代修改模式</td>
+          <td style="text-align:left;font-weight:700;">待补充标注</td>
+          <td>不知道的内容不瞎编，标注「待补充」</td>
         </tr>
         <tr>
           <td style="text-align:left;font-weight:700;">输出格式</td>
-          <td>Excel / PDF / Markdown / HTML网页</td>
+          <td>Excel / PDF / Markdown / HTML 均可配置</td>
         </tr>
       </tbody>
     </table>
-    <div class="tip-box green" style="margin-top:16px;">
-      <span class="icon">🔄</span>
-      <span>Skill 创建后可以持续优化。比如用了一两周后说「把我的周报Skill加上数据指标模块」或「改成按项目分块的格式」，AI 会立即更新。随项目变化持续迭代，模版越用越贴合。</span>
+    <div class="tip-box warn">
+      <span class="icon">⚠️</span>
+      <span><b>铁律</b>：① 内容真实有据，不瞎编 ② 最终周报必须经你确认后才导出 ③ 严格按模板输出，编号一致、项目对齐 ④ 风险项必须用 🚨 标注</span>
     </div>
   </div>
 </div>
@@ -1096,45 +1083,9 @@
     <div class="flow-node green">团队可查阅</div>
   </div>
 
-  <!-- 6.1 前置准备 -->
+  <!-- 6.1 创建归档 Skill -->
   <div class="card" style="border-left:4px solid #00B8D9;">
-    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:#00B8D9;">🔑 前置准备：获取你的个人文件夹链接（一次性）</h3>
-    <p style="font-size:14px;color:var(--gray-600);margin-bottom:16px;">导入周报到乐享，需要知道你的个人文件夹链接。只需操作一次：</p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num" style="background:#00B8D9;">1</div>
-        <div class="step-content">
-          <div class="step-title">打开团队知识库</div>
-          <div class="step-desc">点击链接进入知识库：<br><code style="background:var(--gray-50);padding:2px 8px;border-radius:4px;font-size:13px;">https://csig.lexiangla.com/spaces/a8b6822538204d62bbedb720a08fe37f</code></div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num" style="background:#00B8D9;">2</div>
-        <div class="step-content">
-          <div class="step-title">找到你的个人文件夹</div>
-          <div class="step-desc">在知识库目录中找到以你名字命名的文件夹</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num" style="background:#00B8D9;">3</div>
-        <div class="step-content">
-          <div class="step-title">复制文件夹链接</div>
-          <div class="step-desc">点击进入你的文件夹，复制浏览器地址栏中的链接，格式类似：<br><code style="background:var(--gray-50);padding:2px 8px;border-radius:4px;font-size:13px;">https://csig.lexiangla.com/pages/xxxxxx</code></div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num" style="background:#00B8D9;">4</div>
-        <div class="step-content">
-          <div class="step-title">记录这个链接</div>
-          <div class="step-desc">后续创建 Skill 和写 Prompt 时都需要用到，建议保存到备忘录</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 6.2 创建归档 Skill -->
-  <div class="card" style="border-left:4px solid #00B8D9;">
-    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:#00B8D9;">🔧 创建周报归档 Skill（一次性）</h3>
+    <h3 style="font-size:17px;font-weight:700;margin-bottom:16px;color:#00B8D9;">🔧 一次性创建：周报归档 Skill</h3>
     <p style="font-size:14px;color:var(--gray-600);margin-bottom:16px;">创建一个专属 Skill，把你的个人文件夹链接写进去，以后一句话即可归档：</p>
     <div class="chat-window">
       <div class="chat-titlebar">
@@ -1146,25 +1097,38 @@
       <div class="chat-body">
         <div class="msg user">
           <div class="msg-avatar">你</div>
-          <div class="msg-bubble">
-            帮我创建一个周报归档 Skill：<br><br>
-            1. <b>触发词</b>：「归档周报」、「周报导入乐享」时自动加载<br>
-            2. <b>目标知识库</b>：交付中心周报（<code>https://csig.lexiangla.com/spaces/a8b6822538204d62bbedb720a08fe37f</code>）<br>
-            3. <b>我的文件夹</b>：XXX的个人文件夹（<code>https://csig.lexiangla.com/pages/xxxxxx</code>）<br>
-            4. <b>操作</b>：将当前周报内容导入到我的文件夹下，页面标题格式为「工作周报_MMDD~MMDD」<br>
-            5. <b>格式</b>：使用 Markdown 格式导入，保持结构化排版
+          <div class="msg-bubble" style="font-size:13px;line-height:1.7;">
+            帮我写一个skill，名称是<b>weekly-report-archive</b>，用于智慧零售交付项目周报归档至乐享知识库。<br><br>
+            <b>## 任务目标</b><br>
+            将我已确认的个人周报，以 Markdown 格式自动导入到乐享知识库指定的个人文件夹中，实现周报的结构化归档与团队共享。<br><br>
+            <b>## 触发条件</b><br>
+            当我说以下关键词或类似表达时，立即加载本 Skill：<br>
+            "归档周报"、"周报导入乐享"、"上传周报到乐享"、"周报归档"、"归档到知识库"、"archive report"<br><br>
+            <b>## 处理步骤</b><br>
+            <b>阶段一：归档文件夹链接</b> — 归档入以下链接：https://csig.lexiangla.com/spaces/a8b6822538204d62bbedb720a08fe37f?company_from=csig（个人周报文件夹链接）<br>
+            <b>阶段二：准备归档内容</b> — 读取确认的周报内容，转换为 Markdown，页面标题格式：工作周报_MMDD~MMDD<br>
+            <b>阶段三：执行归档</b> — 导入成功后返回乐享页面链接，通知归档结果<br>
+            <b>阶段四：确认与校验</b> — 提示打开链接检查，有问题支持重新归档<br><br>
+            <b>## 铁律约束</b><br>
+            ① 必须使用个人文件夹链接，禁止导入到团队根目录<br>
+            ② 用户确认后才能归档，禁止未经确认自动导入<br>
+            ③ 标题格式统一，严格使用"工作周报_MMDD~MMDD"<br>
+            ④ 内容完整，不得遗漏或篡改<br>
+            ⑤ 链接无效时停止并提示重新获取
           </div>
         </div>
         <div class="msg ai">
           <div class="msg-avatar">AI</div>
           <div class="msg-bubble">
             ✅ 已创建 Skill：<b>weekly-report-archive</b><br><br>
-            <b>Skill 内容预览：</b><br>
-            · 触发词：归档周报 / 周报导入乐享<br>
-            · 目标知识库：交付中心周报<br>
-            · 归档位置：XXX的个人文件夹<br>
-            · 导入格式：Markdown<br>
-            · 页面标题：工作周报_MMDD~MMDD<br><br>
+            <b>触发词</b>：归档周报 / 周报导入乐享 / 上传周报到乐享 / 周报归档 / 归档到知识库<br>
+            <b>归档位置</b>：交付中心周报 → 个人文件夹<br>
+            <b>处理流程</b>：<br>
+            &nbsp;① 归档文件夹链接 → 验证个人文件夹链接可访问<br>
+            &nbsp;② 准备归档内容 → 读取周报，转 Markdown，标题：工作周报_MMDD~MMDD<br>
+            &nbsp;③ 执行归档 → 导入乐享，返回页面链接<br>
+            &nbsp;④ 确认与校验 → 提示检查，支持重新归档<br><br>
+            <b>铁律</b>：仅归档到个人文件夹 / 用户确认后才导入 / 标题格式统一 / 内容不遗漏 / 链接无效时停止<br><br>
             💡 下次周报生成后，说「归档周报」即可一键导入。
           </div>
         </div>
